@@ -3,7 +3,13 @@ def arithmetic_arranger(problems,viewResults = False):
         return "Error: Too many problems."
     
     arranged_problems = []
-    str_list = []
+    
+    linea1 = ""
+    linea2 = ""
+    linea3 = ""
+    linea4 = ""
+    #aca arranco con las comprobaciones
+    #---------------------------////-----------------------------------------------------------------
     for problem in problems:
         termino = problem.split(" ")
         
@@ -19,6 +25,8 @@ def arithmetic_arranger(problems,viewResults = False):
         except:
             return "Error: Numbers must only contain digits."
         
+    # termino las comprobaciones y empiezo a asjuntar al string
+    #--------------------------------*/////----------------------------------------------------------------
         operator = termino[1]
         res = 0
         if operator == "+":
@@ -26,33 +34,32 @@ def arithmetic_arranger(problems,viewResults = False):
         else:
             res = n1-n2
 
+
         arranged_problems.append(res)
         ns1 = str(n1)
         ns2 = str(n2)
+        maxlen = max(len(ns1),len(ns2))
         
-        resultado = ""
-        statment = ""
-        if (viewResults):
-            resultado = res
-            statment = (f"""
-                {str(n1).rjust((max(len(ns1),len(ns2))+2)," ")}
-                {operator} {str(n2).rjust((max(len(ns1),len(ns2)))," ")}
-                {"-"*(max(len(ns1),len(ns2))+2)}
-                {str(resultado).rjust((max(len(ns1),len(ns2))+2)," ")}
-                """)
-            
+        if (problem != problems[-1]):
+            linea1 += ns1.rjust(maxlen+2," ") + "    "
+            linea2 += operator + " "+ns2.rjust(maxlen," ")+ "    "
+            linea3 += f"{'-'* ((maxlen)+2) }" + "    "
+            if viewResults:
+                linea4 += f"{str(res).rjust((maxlen)+2)}" + "    "
         else:
-            statment = (f"""
-                {str(n1).rjust((max(len(ns1),len(ns2))+2)," ")}
-                {operator} {str(n2).rjust((max(len(ns1),len(ns2)))," ")}
-                {"-"*(max(len(ns1),len(ns2))+2)}
-                """)
-            
-        str_list.append(statment)
+            linea1 += ns1.rjust(maxlen+2," ")
+            linea2 += operator + " "+ ns2.rjust(maxlen," ")
+            linea3 += f"{'-'* ((maxlen)+2) }"
+            if viewResults:
+                linea4 += f"{str(res).rjust((maxlen)+2)}"
+    
+    
+    string = ""
+    if viewResults:
+        string+=linea1 + "\n" + linea2+ "\n" + linea3+ "\n" + linea4
+    else:
+        string+=linea1 + "\n" + linea2+ "\n" + linea3
         
-    print(str_list)    
-    for stat in str_list:
-        print(stat,end="")    
-
-    return arranged_problems
-arithmetic_arranger(['24 + 852', '3801 - 2', '45 + 43', '123 + 49'])
+    
+    return string
+print(arithmetic_arranger(['24 + 852', '3801 - 2', '45 + 43', '123 + 49'],True))
